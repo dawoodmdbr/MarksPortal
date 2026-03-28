@@ -1,185 +1,200 @@
 # Marks Portal
 
-A clean, minimal web application for university students to view their assignment and quiz marks. Built with Vite + React on the frontend and Google Apps Script as the backend API.
+A clean, minimal web application for university students to view their assignment and quiz marks. Students log in with their university Google account and instantly see their marks pulled from a Google Sheet.
+
+---
+
+## Screenshots
+
+> Add screenshots after deployment
+
+| Login | Dashboard |
+|-------|-----------|
+| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
 
 ---
 
 ## Features
 
 - 🔐 Google OAuth login — university emails only (`@cfd.nu.edu.pk`)
-- 📊 Displays assignment (A1, A2, A3) and quiz (Q1, Q2) marks
-- 🔒 Double validation: frontend domain check + backend email lookup
-- 📱 Fully responsive layout
-- ⚡ Fast — no heavy dependencies, pure CSS
-- 🚀 Deployable to GitHub Pages for free
+- 📊 Marks auto-grouped by type — Assignments, Quizzes, Home Tests
+- ➕ Fully dynamic — add columns to the sheet, they appear automatically
+- 🔒 Double validation — frontend domain check + backend email lookup
+- 📱 Fully responsive — works on mobile and desktop
+- ⚡ Fast and lightweight — no heavy libraries, pure CSS
+- 🚀 Free hosting on GitHub Pages
 
 ---
 
 ## Tech Stack
 
-| Layer     | Technology                        |
-|-----------|-----------------------------------|
-| Frontend  | Vite + React 18, Pure CSS         |
-| Auth      | Google Identity Services (GIS)    |
-| Backend   | Google Apps Script (Web App)      |
-| Data      | Google Sheets                     |
-| Hosting   | GitHub Pages                      |
+| Layer      | Technology                      |
+|------------|---------------------------------|
+| Frontend   | Vite + React 18                 |
+| Styling    | Pure CSS (no frameworks)        |
+| Auth       | Google Identity Services (GIS)  |
+| Backend    | Google Apps Script (Web App)    |
+| Database   | Google Sheets                   |
+| Hosting    | GitHub Pages                    |
 
 ---
 
 ## Project Structure
-
 ```
 marks-portal/
-├── backend/
-│   └── Code.gs              ← Google Apps Script code
-│
-├── src/
-│   ├── pages/
-│   │   ├── Login.jsx        ← Login screen
-│   │   ├── Login.css
-│   │   ├── Dashboard.jsx    ← Marks dashboard
-│   │   └── Dashboard.css
-│   │
-│   ├── components/
-│   │   ├── Header.jsx       ← Top bar with student info
-│   │   ├── Header.css
-│   │   ├── MarksTable.jsx   ← Marks card grid
-│   │   └── MarksTable.css
-│   │
-│   ├── services/
-│   │   └── api.js           ← fetch wrapper + domain validator
-│   │
-│   ├── App.jsx              ← Root component / router
-│   ├── main.jsx             ← React entry point
-│   └── index.css            ← Global CSS variables & reset
-│
 ├── index.html
 ├── vite.config.js
 ├── package.json
-├── .env.example
-└── README.md
+├── backend/
+│   └── Code.gs              ← Google Apps Script backend
+└── src/
+    ├── main.jsx
+    ├── index.css            ← Global CSS variables
+    ├── App.jsx              ← Root component
+    ├── pages/
+    │   ├── Login.jsx        ← Login screen with Google Sign-In
+    │   ├── Login.css
+    │   ├── Dashboard.jsx    ← Marks dashboard
+    │   └── Dashboard.css
+    ├── components/
+    │   ├── Header.jsx       ← Top bar with student info + logout
+    │   ├── Header.css
+    │   ├── MarksTable.jsx   ← Dynamic marks card grid
+    │   └── MarksTable.css
+    └── services/
+        └── api.js           ← API calls + email validation
 ```
 
 ---
 
-## Setup Guide
+## Google Sheet Setup
 
-### Step 1 — Google Sheet
+1. Go to [sheets.google.com](https://sheets.google.com) and create a new spreadsheet
+2. Rename the first sheet tab to **`Marks`** (exact spelling, capital M)
+3. Set up your headers in Row 1:
 
-1. Go to [Google Sheets](https://sheets.google.com) and create a new spreadsheet.
-2. Rename the first sheet tab to **`Marks`** (exact spelling).
-3. Add the following headers in Row 1:
+| Email | Name | Roll no | A1 | A2 | Q1 | Q2 | HT2 | HT3 |
+|-------|------|---------|----|----|----|----|-----|-----|
 
-   | A     | B    | C       | D  | E  | F  | G  | H  |
-   |-------|------|---------|----|----|----|----|-----|
-   | Email | Name | Roll No | A1 | A2 | A3 | Q1 | Q2 |
+4. Add a **`max`** row in Row 2 with the maximum marks for each column:
 
-4. Fill in student data starting from Row 2. Example:
+| max | | | 25 | 25 | 10 | 10 | 10 | 10 |
+|----|--|--|----|----|----|----|-----|-----|
 
-   | student@cfd.nu.edu.pk | Ali Raza | 21-CFD-001 | 8 | 9 | 7 | 10 | 8 |
+5. Add student data from Row 3 onwards:
 
-5. Keep the spreadsheet open — you'll link it to Apps Script next.
+| student@cfd.nu.edu.pk | Ali Raza | 21-CFD-001 | 23 | 20 | 8 | 9 | 7 | 8 |
+|----|--|--|----|----|----|----|-----|-----|
 
----
+### Column Naming Rules
 
-### Step 2 — Google Apps Script (Backend API)
+The backend auto-detects columns by their prefix:
 
-1. In your Google Sheet, click **Extensions → Apps Script**.
-2. Delete any existing code in the editor.
-3. Copy the entire contents of `backend/Code.gs` and paste it in.
-4. Click **Save** (💾).
-5. Click **Deploy → New deployment**.
-6. Set the following:
-   - **Type**: Web app
-   - **Description**: Marks Portal API
-   - **Execute as**: Me
-   - **Who has access**: Anyone
-7. Click **Deploy** and **Authorize** when prompted.
-8. Copy the **Web app URL** — it looks like:
-   ```
-   https://script.google.com/macros/s/AKfycb.../exec
-   ```
-9. Paste this URL into `src/services/api.js` as the value of `APPS_SCRIPT_URL`.
+| Prefix | Groups into | Example |
+|--------|------------|---------|
+| `A` + number | Assignments | `A1`, `A2`, `A3` |
+| `Q` + number | Quizzes | `Q1`, `Q2`, `Q3` |
+| `HT` + number | Home Tests | `HT2`, `HT3`, `HT4` |
 
-> ⚠️ Every time you edit `Code.gs`, you must create a **new deployment** (not update the existing one) for changes to take effect.
+> Just add a new column to the sheet — it appears on the dashboard automatically. No code changes needed.
 
 ---
 
-### Step 3 — Google OAuth Client ID
+## Apps Script Setup (Backend)
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project (or use an existing one).
-3. Navigate to **APIs & Services → Credentials**.
-4. Click **Create Credentials → OAuth 2.0 Client ID**.
-5. Choose **Web application**.
-6. Under **Authorised JavaScript origins**, add:
-   - `http://localhost:5173` (for local dev)
-   - `https://YOUR_GITHUB_USERNAME.github.io` (for production)
-7. Click **Create** and copy the **Client ID**.
-8. Paste it into `src/pages/Login.jsx` as the value of `GOOGLE_CLIENT_ID`.
+1. In your Google Sheet click **Extensions → Apps Script**
+2. Delete all existing code
+3. Copy the contents of `backend/Code.gs` and paste it in
+4. Click **Save** (💾)
+5. Click **Deploy → New deployment**
+6. Click the ⚙️ gear → select **Web app**
+7. Set:
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+8. Click **Deploy** → **Authorize access** → Allow
+9. Copy the **Web app URL**
+10. Paste it into `src/services/api.js`:
+```js
+const APPS_SCRIPT_URL = 'YOUR_URL_HERE'
+```
+
+> ⚠️ Every time you edit `Code.gs` you must create a **New deployment** — not update the existing one.
 
 ---
 
-### Step 4 — Run Locally
+## Google OAuth Setup
 
+1. Go to [console.cloud.google.com](https://console.cloud.google.com)
+2. Create a new project
+3. Go to **APIs & Services → OAuth consent screen**
+   - User type: **External** → Create
+   - Fill in app name and email → Save
+4. Go to **APIs & Services → Credentials**
+5. Click **+ Create Credentials → OAuth 2.0 Client ID**
+6. Application type: **Web application**
+7. Under **Authorised JavaScript origins** add:
+   - `http://localhost:5173` (local development)
+   - `https://YOUR_USERNAME.github.io` (production)
+8. Click **Create** → copy the **Client ID**
+9. Paste it into `src/pages/Login.jsx`:
+```js
+const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'
+```
+
+---
+
+## Running Locally
+
+Make sure you have [Node.js](https://nodejs.org) installed, then:
 ```bash
-# 1. Clone the repo
+# Clone the repo
 git clone https://github.com/YOUR_USERNAME/marks-portal.git
 cd marks-portal
 
-# 2. Install dependencies
+# Install dependencies
 npm install
 
-# 3. Start the dev server
+# Start dev server
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open [http://localhost:5173](http://localhost:5173)
 
 ---
 
-### Step 5 — Deploy to GitHub Pages
+## Deploying to GitHub Pages
+```bash
+# First time setup
+npm install --save-dev gh-pages
 
-1. In `vite.config.js`, set `base` to your GitHub repo name:
-   ```js
-   base: '/marks-portal/',
-   ```
+# Deploy
+npm run deploy
+```
 
-2. Install the deploy helper:
-   ```bash
-   npm install --save-dev gh-pages
-   ```
+Make sure `vite.config.js` has the correct base:
+```js
+base: '/marks-portal/',
+```
 
-3. Add to `package.json` scripts:
-   ```json
-   "deploy": "npm run build && gh-pages -d dist"
-   ```
-
-4. Run:
-   ```bash
-   npm run deploy
-   ```
-
-5. Go to your repo **Settings → Pages** and make sure the source is set to the `gh-pages` branch.
-
-Your app will be live at `https://YOUR_USERNAME.github.io/marks-portal/`.
+Your app will be live at:
+```
+https://YOUR_USERNAME.github.io/marks-portal/
+```
 
 ---
 
 ## Data Flow
-
 ```
-Student                Frontend               Apps Script          Google Sheet
-   │                      │                        │                    │
-   │── Sign in Google ──▶ │                        │                    │
-   │                      │── Decode JWT           │                    │
-   │                      │── Check domain         │                    │
-   │                      │── GET ?email=... ─────▶│                    │
-   │                      │                        │── Lookup email ───▶│
-   │                      │                        │◀── Student row ────│
-   │                      │◀── JSON response ──────│                    │
-   │◀── Dashboard shown ──│                        │                    │
+Student          Frontend              Apps Script         Google Sheet
+   │                │                      │                    │
+   │─ Sign in ─────▶│                      │                    │
+   │                │─ Decode JWT          │                    │
+   │                │─ Check domain        │                    │
+   │                │─ GET ?email=... ────▶│                    │
+   │                │                      │─ Find email ──────▶│
+   │                │                      │◀─ Student row ─────│
+   │                │◀─ JSON response ─────│                    │
+   │◀─ Dashboard ───│                      │                    │
 ```
 
 ---
@@ -191,8 +206,10 @@ Student                Frontend               Apps Script          Google Sheet
 {
   "name": "Ali Raza",
   "rollNo": "21-CFD-001",
-  "assignments": { "A1": 8, "A2": 9, "A3": 7 },
-  "quizzes": { "Q1": 10, "Q2": 8 }
+  "assignments": { "A1": 23, "A2": 20 },
+  "quizzes":     { "Q1": 8,  "Q2": 9  },
+  "homeTests":   { "HT2": 7, "HT3": 8 },
+  "maxMarks":    { "A1": 25, "A2": 25, "Q1": 10, "Q2": 10, "HT2": 10, "HT3": 10 }
 }
 ```
 
@@ -203,48 +220,38 @@ Student                Frontend               Apps Script          Google Sheet
 
 ---
 
-## Screenshots
+## Security
 
-> _Add screenshots here after deployment._
-
-| Login Page | Dashboard |
-|------------|-----------|
-| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
+- Frontend domain check is for UX only — not a security boundary
+- Backend validates every request independently
+- Only the requesting student's row is returned — no student can see another's data
+- Google handles all authentication — no passwords stored anywhere
 
 ---
 
 ## Customisation
 
-| What to change          | Where                                      |
-|-------------------------|--------------------------------------------|
-| Allowed email domain    | `src/services/api.js` → `ALLOWED_DOMAIN`   |
-| Max marks per item      | `src/pages/Dashboard.jsx` → `ASSIGNMENT_MAX` / `QUIZ_MAX` |
-| Sheet name              | `backend/Code.gs` → `SHEET_NAME`           |
-| Add more columns        | Update `COL` map in `Code.gs` + `MarksTable` usage in Dashboard |
-| Colour theme            | `src/index.css` → CSS variables            |
-
----
-
-## Security Notes
-
-- The frontend performs a domain check as a first pass, but this is **not a security boundary** — it's UX only.
-- The Apps Script backend performs the authoritative email lookup. No student can see another student's data because the API only returns the row matching the authenticated email.
-- Never expose your full sheet data via a public endpoint.
-- The Google OAuth JWT is verified by Google's servers; the frontend only decodes the payload for display purposes.
+| What | Where |
+|------|-------|
+| Allowed email domain | `src/services/api.js` → `ALLOWED_DOMAIN` |
+| Sheet tab name | `backend/Code.gs` → `SHEET_NAME` |
+| Add more mark columns | Just add to Google Sheet — fully automatic |
+| Change colours | `src/index.css` → CSS variables |
+| GitHub repo name | `vite.config.js` → `base` |
 
 ---
 
 ## Future Improvements
 
-- [ ] Add semester/course selector for multi-course support
-- [ ] Add a grade scale indicator (e.g., letter grade)
-- [ ] Admin panel for faculty to update marks directly
-- [ ] Email notifications when marks are updated
-- [ ] Progressive Web App (PWA) support for mobile
-- [ ] Export marks as PDF
+- [ ] Multiple courses / semesters
+- [ ] Letter grade display
+- [ ] Faculty admin panel to update marks
+- [ ] Email notification when marks are updated
+- [ ] Download marks as PDF
+- [ ] Progressive Web App (PWA) support
 
 ---
 
 ## License
 
-MIT — free to use, modify, and distribute for educational purposes.
+MIT — free to use and modify for educational purposes.
