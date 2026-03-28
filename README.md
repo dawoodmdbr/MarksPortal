@@ -83,7 +83,7 @@ marks-portal/
 
 5. Add student data from Row 3 onwards:
 
-| student@cfd.nu.edu.pk | Ali Raza | 21-CFD-001 | 23 | 20 | 8 | 9 | 7 | 8 |
+| student@cfd.nu.edu.pk | Ali | 21F-0001 | 23 | 20 | 8 | 9 | 7 | 8 |
 |----|--|--|----|----|----|----|-----|-----|
 
 ### Column Naming Rules
