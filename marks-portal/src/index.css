@@ -1,0 +1,33 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:        #f5f3ee;
+  --bg-card:   #ffffff;
+  --ink:       #1a1a2e;
+  --ink-muted: #6b6b80;
+  --accent:    #2b3a8f;
+  --accent-lt: #e8ecf8;
+  --border:    #e0ddd6;
+  --shadow:    0 2px 16px rgba(26, 26, 46, 0.08);
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --radius:    12px;
+  --radius-sm: 6px;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
