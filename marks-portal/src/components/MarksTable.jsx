@@ -1,4 +1,4 @@
-import './MarksTable.css'
+import '../styles/MarksTable.css'
 
 export default function MarksTable({ title, marks, maxMarks }) {
   const entries = Object.entries(marks)

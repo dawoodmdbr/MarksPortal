@@ -1,0 +1,45 @@
+.frosted-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3000;
+  transform: translate(-50%, -50%);
+  transition: 
+    transform 150ms ease, 
+    background 200ms ease, 
+    box-shadow 200ms ease, 
+    border 200ms ease;
+
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(0.25rem) saturate(160%);
+  -webkit-backdrop-filter: blur(1rem) saturate(160%);
+  border: 2px solid rgba(105, 105, 105, 0.45);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1), 0 0 16px rgba(94, 94, 94, 0.25);
+}
+
+
+/* 🔥 Hover State */
+.frosted-cursor.hover {
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.4),
+    0 0 24px rgba(94, 94, 94, 0.6),
+    0 0 36px rgba(255, 255, 255, 0.3);
+}
+
+
+.frosted-cursor.disabled {
+  background: rgba(255, 77, 77, 0.25); /* transparent red */
+  border: 2px dashed rgba(255, 0, 0, 0.5);
+  transform: translate(-50%, -50%) scale(0.85);
+  box-shadow: 
+    0 0 10px rgba(255, 0, 0, 0.3),
+    0 0 20px rgba(255, 0, 0, 0.25);
+  filter: grayscale(0.3);
+}

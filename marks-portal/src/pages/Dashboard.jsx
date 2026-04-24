@@ -1,6 +1,6 @@
 import Header from '../components/Header.jsx'
 import MarksTable from '../components/MarksTable.jsx'
-import './Dashboard.css'
+import '../styles/Dashboard.css'
 
 export default function Dashboard({ user, studentData, onLogout }) {
 

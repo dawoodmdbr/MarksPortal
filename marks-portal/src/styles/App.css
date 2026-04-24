@@ -1,0 +1,17 @@
+* {
+  cursor: none !important;
+}
+
+body{
+    background-color: #f5f3ee;
+}
+
+@media (max-width: 768px) {
+  * {
+    cursor: default !important;
+  }
+
+  .frosted-cursor {
+    display: none;
+  }
+}

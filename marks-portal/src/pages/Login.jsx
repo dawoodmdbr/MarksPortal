@@ -3,7 +3,7 @@ import {isUniversityEmail, fetchStudentMarks} from "../services/api.js";
 import {bouncy} from "ldrs";
 bouncy.register();
 
-import "./Login.css";
+import "../styles/Login.css";
 
 const GOOGLE_CLIENT_ID = "267532668906-iuejgq4ikdqahf3hs8n7vudoemqgkdg7.apps.googleusercontent.com";
 
