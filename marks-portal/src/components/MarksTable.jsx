@@ -12,7 +12,7 @@ export default function MarksTable({ title, marks, maxMarks }) {
       <div className="marks-section-header">
         <h2 className="marks-section-title">{title}</h2>
         <span className="marks-section-total">
-          Total: <strong>{earned}</strong> / {total}
+          ABS: <strong>{(earned/total)*10}</strong> / 10
         </span>
       </div>
 
