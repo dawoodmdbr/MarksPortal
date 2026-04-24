@@ -58,8 +58,6 @@ export default function Login({onLoginSuccess}) {
 
     return (
         <div className='login-bg'>
-            <div className='blob blob-1' />
-            <div className='blob blob-2' />
             <main className='login-card'>
                 <div className='login-logo'></div>
                 <h1 className='login-title'>Marks Portal</h1>
