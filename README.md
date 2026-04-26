@@ -4,13 +4,21 @@ A clean, minimal web application for university students to view their assignmen
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-> Add screenshots after deployment
+---
 
-| Login | Dashboard |
-|-------|-----------|
-| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
+### Login Page
+<p align="center">
+    <img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/d2be77ab-b071-4025-aab5-70651a4134da" />
+</p>
+
+---
+
+### Results
+<p align="center">
+    <img width="1919" height="915" alt="image" src="https://github.com/user-attachments/assets/0456009a-8881-4ed4-9716-4b62c27ff14d" />
+</p>
 
 ---
 
