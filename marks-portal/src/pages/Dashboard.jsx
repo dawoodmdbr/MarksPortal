@@ -23,7 +23,7 @@ export default function Dashboard({user, studentData, onLogout}) {
                     </div>
 
                     {sections.map((s) => (
-                        <MarksTable key={s.title} title={s.title} marks={s.marks} maxMarks={studentData.maxMarks} totalAbs={totalAbs} />
+                        <MarksTable key={s.title} title={s.title} marks={s.marks} maxMarks={studentData.maxMarks} totalAbs={s.totalAbs} />
                     ))}
                 </div>
             </main>
