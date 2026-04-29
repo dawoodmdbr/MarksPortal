@@ -1,6 +1,6 @@
 import '../styles/MarksTable.css'
 
-export default function MarksTable({ title, marks, maxMarks }) {
+export default function MarksTable({ title, marks, maxMarks, totalAbs }) {
   const entries = Object.entries(marks)
 
   // Calculate section totals
@@ -12,7 +12,7 @@ export default function MarksTable({ title, marks, maxMarks }) {
       <div className="marks-section-header">
         <h2 className="marks-section-title">{title}</h2>
         <span className="marks-section-total">
-          ABS: <strong>{(earned/total)*10}</strong> / 10
+          ABS: <strong>{(earned/total)*totalAbs}</strong> / ${totalAbs}
         </span>
       </div>
 
